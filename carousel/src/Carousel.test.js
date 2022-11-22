@@ -17,3 +17,23 @@ it("works when you click on the right arrow", function() {
   expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).not.toBeInTheDocument();
   expect(queryByAltText("Photo by Pratik Patel on Unsplash")).toBeInTheDocument();
 });
+
+test("it renders without crashing", () => {
+  render(<Carousel />)
+})
+
+test("it matches snapshot", () => {
+  const {asFragment} = render(<Carousel />)
+  expect(asFragment()).toMatchSnapshot()
+})
+
+test("left arrow goes to previous image", () => {
+    const {queryByAltText, queryByTestId} = render(<Carousel />)
+
+    fireEvent.click(queryByTestId("right-arrow"))
+
+    fireEvent.click(queryByTestId("left-arrow"))
+
+    expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).toBeInTheDocument();
+    expect(queryByAltText("Photo by Pratik Patel on Unsplash")).not.toBeInTheDocument();
+})
